@@ -37,7 +37,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Task'
-
+        get:
+            summary: Récupère l'ensemble des tâches
+            parameters:
+                    in: query
+                    name: todo-only
+                    required: true
+                    schema:
+                      type: array
+            responses:
+                '200':
+                    description: JSON avec les tâches
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                $ref: '#/components/schemas/Task'
+                '201':
+                    description: pas de resultat
     /tasks/{id}:
         parameters:
             -   in: path
@@ -61,7 +78,22 @@ paths:
                                 $ref: '#/components/schemas/Task'
                 '404':
                     description: Tâche non trouvée
-components:
+        delete:
+            summary: supprime une tâche par ID
+            responses: 
+              '204':
+                description: tâche supprimée
+              '404':
+                description: tâche non trouvée
+        put: 
+            summary: modifie une tâche à patir d'un JSON
+            responses:
+              '204':
+                description: tâche modifiée
+              '404':
+                description: tâche non trouvée
+
+components: 
     schemas:
         Task:
             type: object
@@ -72,7 +104,7 @@ components:
                     example: 1
                 title:
                     type: string
-                    nullable: false
+                    nullable: true
                     example: Acheter du lait
                 description:
                     type: string
@@ -80,7 +112,7 @@ components:
                     example: 2L demi-écrémé
                 done:
                     type: boolean
-                    nullable: false
+                    nullable: true
                     example: false
             required:
                 - id
