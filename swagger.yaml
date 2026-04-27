@@ -37,7 +37,21 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Task'
-
+        get:
+            summary: Récupère l'ensemble des tâches
+            parameters:
+                    name : todo-only
+                    required: true
+            responses:
+                '200':
+                    description: JSON avec les tâches
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                $ref: '#/components/schemas/Task'
+                '201':
+                    description: pas de resultat
     /tasks/{id}:
         parameters:
             -   in: path
@@ -61,7 +75,22 @@ paths:
                                 $ref: '#/components/schemas/Task'
                 '404':
                     description: Tâche non trouvée
-components:
+        delete:
+            summary: supprime une tâche par ID
+            responses: 
+            '204':
+                description: tâche supprimée
+            '404':
+                description: tâche non trouvée
+        put: 
+            summary: modifie une tâche à patir d'un JSON
+            responses:
+            '204':
+                description: tâche modifiée
+            '404':
+                description: tâche non trouvée
+
+components: 
     schemas:
         Task:
             type: object
