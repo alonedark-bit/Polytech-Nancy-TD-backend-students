@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.nonNull;
+import java.util.List;
 
 /**
  * Main class of the application. Managing routing and HTTP layer.
@@ -49,6 +50,26 @@ public class Application {
         }
         //endregion
 
+        //region Manage GET /tasks
+        if ("GET".equals(method) && "/tasks".equals(path)) {
+            String query = exchange.getRequestURI().getQuery();
+            boolean todoOnly = false;
+
+            if (query != null && query.contains("todo-only=true")) {
+                todoOnly = true;
+            }
+
+            List<Task> tasks = dao.findAll(todoOnly);
+
+            if (tasks.isEmpty()) {
+                sendResponse(exchange, 204, null);
+            } else {
+                sendResponse(exchange, 200, JsonUtils.serialize(tasks));
+            }
+            return;
+        }
+        //endregion
+
         //region Manage GET /tasks/{id}
         Matcher m = ID_PATH.matcher(path);
         if ("GET".equals(method) && m.matches()) {
@@ -57,6 +78,36 @@ public class Application {
 
             if (task.isPresent()) {
                 sendResponse(exchange, 200, JsonUtils.serialize(task.get()));
+            } else {
+                sendResponse(exchange, 404, null);
+            }
+            return;
+        }
+        //endregion
+
+        //region Manage PUT /tasks/{id}
+        if ("PUT".equals(method) && m.matches()) {
+            int id = Integer.parseInt(m.group(1));
+            String requestBody = new String(exchange.getRequestBody().readAllBytes(), UTF_8);
+            Task input = JsonUtils.deserialize(requestBody, Task.class);
+
+            boolean isUpdated = dao.update(id, input);
+            if (isUpdated) {
+                sendResponse(exchange, 204, null);
+            } else {
+                sendResponse(exchange, 404, null);
+            }
+            return;
+        }
+        //endregion
+
+        //region Manage DELETE /tasks/{id}
+        if ("DELETE".equals(method) && m.matches()) {
+            int id = Integer.parseInt(m.group(1));
+
+            boolean isDeleted = dao.deleteById(id);
+            if (isDeleted) {
+                sendResponse(exchange, 204, null);
             } else {
                 sendResponse(exchange, 404, null);
             }
