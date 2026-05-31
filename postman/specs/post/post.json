@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "post",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "paths": {
+    "/tasks/1": {
+      "get": {
+        "summary": "GET /tasks/{id}",
+        "responses": {}
+      },
+      "delete": {
+        "summary": "DELETE /tasks/{id}",
+        "responses": {}
+      },
+      "put": {
+        "summary": "PUT /tasks/{id}",
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "done": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "example": {
+                "id": 1,
+                "title": "Tâche 1 modifiée",
+                "description": "Je viens de la modifier",
+                "done": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "GET /tasks",
+        "responses": {}
+      },
+      "post": {
+        "summary": "POST /tasks",
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "done": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "example": {
+                "id": 1,
+                "title": "Tâche 1 modifiée",
+                "description": "Je viens de la poster3",
+                "done": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

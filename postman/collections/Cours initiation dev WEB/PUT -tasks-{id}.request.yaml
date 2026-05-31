@@ -1,0 +1,18 @@
+$kind: http-request
+name: PUT /tasks/{id}
+url: http://localhost:8080/tasks/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\": 1,\r
+
+    \    \"title\": \"Tâche 1 modifiée\",\r
+
+    \    \"description\": \"Je viens de la modifier\",\r
+
+    \    \"done\": true\r
+
+    }"
+order: 3412088834957866
